@@ -1,0 +1,6867 @@
+openapi: 3.0.3
+info:
+  title: SISGETRAN API
+  version: 1.0.0
+paths:
+  /api/v1/accounts/auth/login/:
+    post:
+      operationId: api_v1_accounts_auth_login_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: ''
+  /api/v1/accounts/auth/logout/:
+    post:
+      operationId: api_v1_accounts_auth_logout_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Logout'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '205':
+          description: No response body
+  /api/v1/accounts/auth/me/:
+    get:
+      operationId: api_v1_accounts_auth_me_retrieve
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Me'
+          description: ''
+  /api/v1/accounts/auth/refresh/:
+    post:
+      operationId: api_v1_accounts_auth_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/accounts/empleados/:
+    get:
+      operationId: api_v1_accounts_empleados_list
+      parameters:
+      - in: query
+        name: activo
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sucursal
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmpleadoList'
+          description: ''
+    post:
+      operationId: api_v1_accounts_empleados_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Empleado'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Empleado'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Empleado'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empleado'
+          description: ''
+  /api/v1/accounts/empleados/{id}/:
+    get:
+      operationId: api_v1_accounts_empleados_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this empleado.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empleado'
+          description: ''
+    put:
+      operationId: api_v1_accounts_empleados_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this empleado.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Empleado'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Empleado'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Empleado'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empleado'
+          description: ''
+    patch:
+      operationId: api_v1_accounts_empleados_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this empleado.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEmpleado'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEmpleado'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEmpleado'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empleado'
+          description: ''
+    delete:
+      operationId: api_v1_accounts_empleados_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this empleado.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/accounts/modulos/:
+    get:
+      operationId: api_v1_accounts_modulos_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedModuloList'
+          description: ''
+    post:
+      operationId: api_v1_accounts_modulos_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Modulo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Modulo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Modulo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Modulo'
+          description: ''
+  /api/v1/accounts/modulos/{id}/:
+    get:
+      operationId: api_v1_accounts_modulos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this modulo.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Modulo'
+          description: ''
+    put:
+      operationId: api_v1_accounts_modulos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this modulo.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Modulo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Modulo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Modulo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Modulo'
+          description: ''
+    patch:
+      operationId: api_v1_accounts_modulos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this modulo.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedModulo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedModulo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedModulo'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Modulo'
+          description: ''
+    delete:
+      operationId: api_v1_accounts_modulos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this modulo.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/accounts/perfiles/:
+    get:
+      operationId: api_v1_accounts_perfiles_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPerfilList'
+          description: ''
+    post:
+      operationId: api_v1_accounts_perfiles_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Perfil'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Perfil'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Perfil'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Perfil'
+          description: ''
+  /api/v1/accounts/perfiles/{id}/:
+    get:
+      operationId: api_v1_accounts_perfiles_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this perfil.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Perfil'
+          description: ''
+    put:
+      operationId: api_v1_accounts_perfiles_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this perfil.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Perfil'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Perfil'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Perfil'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Perfil'
+          description: ''
+    patch:
+      operationId: api_v1_accounts_perfiles_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this perfil.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPerfil'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPerfil'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPerfil'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Perfil'
+          description: ''
+    delete:
+      operationId: api_v1_accounts_perfiles_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this perfil.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/accounts/perfiles/{id}/matriz-permisos/:
+    put:
+      operationId: api_v1_accounts_perfiles_matriz_permisos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this perfil.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Perfil'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Perfil'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Perfil'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Perfil'
+          description: ''
+  /api/v1/accounts/permisos/:
+    get:
+      operationId: api_v1_accounts_permisos_list
+      parameters:
+      - in: query
+        name: module
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: profile
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPermisoList'
+          description: ''
+    post:
+      operationId: api_v1_accounts_permisos_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Permiso'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Permiso'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Permiso'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permiso'
+          description: ''
+  /api/v1/accounts/permisos/{id}/:
+    get:
+      operationId: api_v1_accounts_permisos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this permiso.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permiso'
+          description: ''
+    put:
+      operationId: api_v1_accounts_permisos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this permiso.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Permiso'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Permiso'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Permiso'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permiso'
+          description: ''
+    patch:
+      operationId: api_v1_accounts_permisos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this permiso.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPermiso'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPermiso'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPermiso'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permiso'
+          description: ''
+    delete:
+      operationId: api_v1_accounts_permisos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this permiso.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/accounts/usuarios/:
+    get:
+      operationId: api_v1_accounts_usuarios_list
+      parameters:
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUsuarioList'
+          description: ''
+    post:
+      operationId: api_v1_accounts_usuarios_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/v1/accounts/usuarios/{id}/:
+    get:
+      operationId: api_v1_accounts_usuarios_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this usuario.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    put:
+      operationId: api_v1_accounts_usuarios_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this usuario.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    patch:
+      operationId: api_v1_accounts_usuarios_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this usuario.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuario'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    delete:
+      operationId: api_v1_accounts_usuarios_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this usuario.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/accounts/usuarios/{id}/restablecer-clave/:
+    post:
+      operationId: api_v1_accounts_usuarios_restablecer_clave_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this usuario.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/v1/accounts/usuarios/{id}/roles/:
+    put:
+      operationId: api_v1_accounts_usuarios_roles_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this usuario.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/v1/attendance/daily/:
+    get:
+      operationId: api_v1_attendance_daily_list
+      parameters:
+      - in: query
+        name: branch
+        schema:
+          type: number
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: date_from
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: date_to
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: employee
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDailyAttendanceList'
+          description: ''
+  /api/v1/attendance/daily/{id}/:
+    get:
+      operationId: api_v1_attendance_daily_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this daily attendance.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyAttendance'
+          description: ''
+  /api/v1/attendance/devices/:
+    get:
+      operationId: api_v1_attendance_devices_list
+      parameters:
+      - in: query
+        name: branch
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - active
+          - inactive
+          - maintenance
+        description: |-
+          * `active` - Activo
+          * `inactive` - Inactivo
+          * `maintenance` - Mantenimiento
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDeviceList'
+          description: ''
+    post:
+      operationId: api_v1_attendance_devices_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Device'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Device'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: ''
+  /api/v1/attendance/devices/{id}/:
+    get:
+      operationId: api_v1_attendance_devices_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attendance device.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: ''
+    put:
+      operationId: api_v1_attendance_devices_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attendance device.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Device'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Device'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: ''
+    patch:
+      operationId: api_v1_attendance_devices_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attendance device.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDevice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDevice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDevice'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: ''
+    delete:
+      operationId: api_v1_attendance_devices_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attendance device.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/attendance/events/:
+    get:
+      operationId: api_v1_attendance_events_list
+      parameters:
+      - in: query
+        name: biometric_pin
+        schema:
+          type: string
+      - in: query
+        name: branch
+        schema:
+          type: number
+      - in: query
+        name: date_from
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: date_to
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: device
+        schema:
+          type: integer
+      - in: query
+        name: employee
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: processed
+        schema:
+          type: boolean
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: verification_method
+        schema:
+          type: string
+          enum:
+          - card
+          - face
+          - fingerprint
+          - other
+          - password
+        description: |-
+          * `fingerprint` - Huella
+          * `face` - Rostro
+          * `card` - Tarjeta
+          * `password` - Contraseña
+          * `other` - Otro
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventListList'
+          description: ''
+  /api/v1/attendance/events/{id}/:
+    get:
+      operationId: api_v1_attendance_events_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attendance event.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v1/attendance/iclock/cdata:
+    get:
+      operationId: api_v1_attendance_iclock_cdata_retrieve
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: ''
+    post:
+      operationId: api_v1_attendance_iclock_cdata_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              format: byte
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+              format: byte
+          multipart/form-data:
+            schema:
+              type: string
+              format: byte
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: ''
+  /api/v1/core/empresas/:
+    get:
+      operationId: api_v1_core_empresas_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmpresaList'
+          description: ''
+    post:
+      operationId: api_v1_core_empresas_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Empresa'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Empresa'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Empresa'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empresa'
+          description: ''
+  /api/v1/core/empresas/{id}/:
+    get:
+      operationId: api_v1_core_empresas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this empresa.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empresa'
+          description: ''
+    put:
+      operationId: api_v1_core_empresas_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this empresa.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Empresa'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Empresa'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Empresa'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empresa'
+          description: ''
+    patch:
+      operationId: api_v1_core_empresas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this empresa.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEmpresa'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEmpresa'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEmpresa'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empresa'
+          description: ''
+    delete:
+      operationId: api_v1_core_empresas_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this empresa.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/core/menu/:
+    get:
+      operationId: api_v1_core_menu_list
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'
+          description: ''
+  /api/v1/core/oficinas/:
+    get:
+      operationId: api_v1_core_oficinas_list
+      parameters:
+      - in: query
+        name: activa
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sucursal
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOficinaList'
+          description: ''
+    post:
+      operationId: api_v1_core_oficinas_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Oficina'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Oficina'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Oficina'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Oficina'
+          description: ''
+  /api/v1/core/oficinas/{id}/:
+    get:
+      operationId: api_v1_core_oficinas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this oficina.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Oficina'
+          description: ''
+    put:
+      operationId: api_v1_core_oficinas_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this oficina.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Oficina'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Oficina'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Oficina'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Oficina'
+          description: ''
+    patch:
+      operationId: api_v1_core_oficinas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this oficina.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOficina'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOficina'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOficina'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Oficina'
+          description: ''
+    delete:
+      operationId: api_v1_core_oficinas_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this oficina.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/core/series-documento/:
+    get:
+      operationId: api_v1_core_series_documento_list
+      parameters:
+      - in: query
+        name: activa
+        schema:
+          type: boolean
+      - in: query
+        name: empresa
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sucursal
+        schema:
+          type: integer
+      - in: query
+        name: tipo_documento
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSerieDocumentoList'
+          description: ''
+    post:
+      operationId: api_v1_core_series_documento_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SerieDocumento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SerieDocumento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SerieDocumento'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDocumento'
+          description: ''
+  /api/v1/core/series-documento/{id}/:
+    get:
+      operationId: api_v1_core_series_documento_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this serie documento.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDocumento'
+          description: ''
+    put:
+      operationId: api_v1_core_series_documento_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this serie documento.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SerieDocumento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SerieDocumento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SerieDocumento'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDocumento'
+          description: ''
+    patch:
+      operationId: api_v1_core_series_documento_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this serie documento.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSerieDocumento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSerieDocumento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSerieDocumento'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDocumento'
+          description: ''
+    delete:
+      operationId: api_v1_core_series_documento_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this serie documento.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/core/series-documento/{id}/siguiente/:
+    post:
+      operationId: api_v1_core_series_documento_siguiente_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this serie documento.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SerieDocumento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SerieDocumento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SerieDocumento'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDocumento'
+          description: ''
+  /api/v1/core/sucursales/:
+    get:
+      operationId: api_v1_core_sucursales_list
+      parameters:
+      - in: query
+        name: activa
+        schema:
+          type: boolean
+      - in: query
+        name: empresa
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSucursalList'
+          description: ''
+    post:
+      operationId: api_v1_core_sucursales_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sucursal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Sucursal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Sucursal'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sucursal'
+          description: ''
+  /api/v1/core/sucursales/{id}/:
+    get:
+      operationId: api_v1_core_sucursales_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sucursal.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sucursal'
+          description: ''
+    put:
+      operationId: api_v1_core_sucursales_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sucursal.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sucursal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Sucursal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Sucursal'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sucursal'
+          description: ''
+    patch:
+      operationId: api_v1_core_sucursales_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sucursal.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSucursal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSucursal'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSucursal'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sucursal'
+          description: ''
+    delete:
+      operationId: api_v1_core_sucursales_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this sucursal.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/core/tipos-documento/:
+    get:
+      operationId: api_v1_core_tipos_documento_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTipoDocumentoList'
+          description: ''
+    post:
+      operationId: api_v1_core_tipos_documento_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoDocumento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TipoDocumento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TipoDocumento'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoDocumento'
+          description: ''
+  /api/v1/core/tipos-documento/{id}/:
+    get:
+      operationId: api_v1_core_tipos_documento_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo documento.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoDocumento'
+          description: ''
+    put:
+      operationId: api_v1_core_tipos_documento_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo documento.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoDocumento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TipoDocumento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TipoDocumento'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoDocumento'
+          description: ''
+    patch:
+      operationId: api_v1_core_tipos_documento_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo documento.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTipoDocumento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTipoDocumento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTipoDocumento'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoDocumento'
+          description: ''
+    delete:
+      operationId: api_v1_core_tipos_documento_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo documento.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/core/ubigeos/:
+    get:
+      operationId: api_v1_core_ubigeos_list
+      parameters:
+      - in: query
+        name: departamento
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: provincia
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUbigeoList'
+          description: ''
+  /api/v1/core/ubigeos/{codigo_inei}/:
+    get:
+      operationId: api_v1_core_ubigeos_retrieve
+      parameters:
+      - in: path
+        name: codigo_inei
+        schema:
+          type: string
+        description: A unique value identifying this ubigeo.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ubigeo'
+          description: ''
+  /api/v1/inventory/almacenes/:
+    get:
+      operationId: api_v1_inventory_almacenes_list
+      parameters:
+      - in: query
+        name: activo
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sucursal
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAlmacenList'
+          description: ''
+    post:
+      operationId: api_v1_inventory_almacenes_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Almacen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Almacen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Almacen'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Almacen'
+          description: ''
+  /api/v1/inventory/almacenes/{id}/:
+    get:
+      operationId: api_v1_inventory_almacenes_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this almacen.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Almacen'
+          description: ''
+    put:
+      operationId: api_v1_inventory_almacenes_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this almacen.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Almacen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Almacen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Almacen'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Almacen'
+          description: ''
+    patch:
+      operationId: api_v1_inventory_almacenes_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this almacen.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAlmacen'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAlmacen'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAlmacen'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Almacen'
+          description: ''
+    delete:
+      operationId: api_v1_inventory_almacenes_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this almacen.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/inventory/kardex/:
+    get:
+      operationId: api_v1_inventory_kardex_list
+      parameters:
+      - in: query
+        name: almacen
+        schema:
+          type: integer
+      - in: query
+        name: direccion
+        schema:
+          type: string
+          enum:
+          - in
+          - out
+        description: |-
+          * `in` - Entrada
+          * `out` - Salida
+      - in: query
+        name: movimiento__tipo
+        schema:
+          type: string
+          enum:
+          - adjustment
+          - output
+          - purchase
+          - transfer
+        description: |-
+          * `purchase` - Compra
+          * `output` - Salida
+          * `transfer` - Traslado
+          * `adjustment` - Ajuste
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: producto
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedKardexList'
+          description: ''
+  /api/v1/inventory/kardex/{id}/:
+    get:
+      operationId: api_v1_inventory_kardex_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this kardex.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Kardex'
+          description: ''
+  /api/v1/inventory/marcas/:
+    get:
+      operationId: api_v1_inventory_marcas_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMarcaList'
+          description: ''
+    post:
+      operationId: api_v1_inventory_marcas_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Marca'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Marca'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Marca'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Marca'
+          description: ''
+  /api/v1/inventory/marcas/{id}/:
+    get:
+      operationId: api_v1_inventory_marcas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this marca.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Marca'
+          description: ''
+    put:
+      operationId: api_v1_inventory_marcas_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this marca.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Marca'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Marca'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Marca'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Marca'
+          description: ''
+    patch:
+      operationId: api_v1_inventory_marcas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this marca.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMarca'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMarca'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMarca'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Marca'
+          description: ''
+    delete:
+      operationId: api_v1_inventory_marcas_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this marca.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/inventory/movimientos/:
+    get:
+      operationId: api_v1_inventory_movimientos_list
+      parameters:
+      - in: query
+        name: almacen_destino
+        schema:
+          type: integer
+      - in: query
+        name: almacen_origen
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: proveedor
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sucursal
+        schema:
+          type: integer
+      - in: query
+        name: tipo
+        schema:
+          type: string
+          enum:
+          - adjustment
+          - output
+          - purchase
+          - transfer
+        description: |-
+          * `purchase` - Compra
+          * `output` - Salida
+          * `transfer` - Traslado
+          * `adjustment` - Ajuste
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMovimientoList'
+          description: ''
+    post:
+      operationId: api_v1_inventory_movimientos_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movimiento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Movimiento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Movimiento'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movimiento'
+          description: ''
+  /api/v1/inventory/movimientos/{id}/:
+    get:
+      operationId: api_v1_inventory_movimientos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this movimiento inventario.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movimiento'
+          description: ''
+  /api/v1/inventory/productos/:
+    get:
+      operationId: api_v1_inventory_productos_list
+      parameters:
+      - in: query
+        name: activo
+        schema:
+          type: boolean
+      - in: query
+        name: marca
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: unidad_base
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductoList'
+          description: ''
+    post:
+      operationId: api_v1_inventory_productos_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Producto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Producto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Producto'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producto'
+          description: ''
+  /api/v1/inventory/productos/{id}/:
+    get:
+      operationId: api_v1_inventory_productos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this producto.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producto'
+          description: ''
+    put:
+      operationId: api_v1_inventory_productos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this producto.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Producto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Producto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Producto'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producto'
+          description: ''
+    patch:
+      operationId: api_v1_inventory_productos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this producto.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProducto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProducto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProducto'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producto'
+          description: ''
+    delete:
+      operationId: api_v1_inventory_productos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this producto.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/inventory/proveedores/:
+    get:
+      operationId: api_v1_inventory_proveedores_list
+      parameters:
+      - in: query
+        name: activo
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProveedorList'
+          description: ''
+    post:
+      operationId: api_v1_inventory_proveedores_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Proveedor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Proveedor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Proveedor'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proveedor'
+          description: ''
+  /api/v1/inventory/proveedores/{id}/:
+    get:
+      operationId: api_v1_inventory_proveedores_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this proveedor.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proveedor'
+          description: ''
+    put:
+      operationId: api_v1_inventory_proveedores_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this proveedor.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Proveedor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Proveedor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Proveedor'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proveedor'
+          description: ''
+    patch:
+      operationId: api_v1_inventory_proveedores_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this proveedor.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProveedor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProveedor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProveedor'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proveedor'
+          description: ''
+    delete:
+      operationId: api_v1_inventory_proveedores_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this proveedor.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/inventory/unidades-medida/:
+    get:
+      operationId: api_v1_inventory_unidades_medida_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUnidadMedidaList'
+          description: ''
+    post:
+      operationId: api_v1_inventory_unidades_medida_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnidadMedida'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UnidadMedida'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UnidadMedida'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnidadMedida'
+          description: ''
+  /api/v1/inventory/unidades-medida/{id}/:
+    get:
+      operationId: api_v1_inventory_unidades_medida_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this unidad medida.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnidadMedida'
+          description: ''
+    put:
+      operationId: api_v1_inventory_unidades_medida_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this unidad medida.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnidadMedida'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UnidadMedida'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UnidadMedida'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnidadMedida'
+          description: ''
+    patch:
+      operationId: api_v1_inventory_unidades_medida_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this unidad medida.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUnidadMedida'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUnidadMedida'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUnidadMedida'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnidadMedida'
+          description: ''
+    delete:
+      operationId: api_v1_inventory_unidades_medida_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this unidad medida.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/treasury/arqueos/:
+    get:
+      operationId: api_v1_treasury_arqueos_list
+      parameters:
+      - in: query
+        name: caja
+        schema:
+          type: integer
+      - in: query
+        name: cajero
+        schema:
+          type: integer
+      - in: query
+        name: estado
+        schema:
+          type: string
+          enum:
+          - cancelled
+          - closed
+          - open
+        description: |-
+          * `open` - Abierto
+          * `closed` - Cerrado
+          * `cancelled` - Anulado
+      - in: query
+        name: fecha
+        schema:
+          type: string
+          format: date
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sucursal
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedArqueoList'
+          description: ''
+    post:
+      operationId: api_v1_treasury_arqueos_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arqueo'
+          description: ''
+  /api/v1/treasury/arqueos/{id}/:
+    get:
+      operationId: api_v1_treasury_arqueos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this arqueo.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arqueo'
+          description: ''
+    put:
+      operationId: api_v1_treasury_arqueos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this arqueo.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arqueo'
+          description: ''
+    patch:
+      operationId: api_v1_treasury_arqueos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this arqueo.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedArqueo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedArqueo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedArqueo'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arqueo'
+          description: ''
+    delete:
+      operationId: api_v1_treasury_arqueos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this arqueo.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/treasury/arqueos/{id}/cerrar/:
+    post:
+      operationId: api_v1_treasury_arqueos_cerrar_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this arqueo.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arqueo'
+          description: ''
+  /api/v1/treasury/arqueos/{id}/conteo-efectivo/:
+    put:
+      operationId: api_v1_treasury_arqueos_conteo_efectivo_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this arqueo.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arqueo'
+          description: ''
+  /api/v1/treasury/arqueos/{id}/detalles/:
+    post:
+      operationId: api_v1_treasury_arqueos_detalles_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this arqueo.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Arqueo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arqueo'
+          description: ''
+  /api/v1/treasury/cajas/:
+    get:
+      operationId: api_v1_treasury_cajas_list
+      parameters:
+      - in: query
+        name: activa
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sucursal
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCajaList'
+          description: ''
+    post:
+      operationId: api_v1_treasury_cajas_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Caja'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Caja'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Caja'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caja'
+          description: ''
+  /api/v1/treasury/cajas/{id}/:
+    get:
+      operationId: api_v1_treasury_cajas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this caja.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caja'
+          description: ''
+    put:
+      operationId: api_v1_treasury_cajas_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this caja.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Caja'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Caja'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Caja'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caja'
+          description: ''
+    patch:
+      operationId: api_v1_treasury_cajas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this caja.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCaja'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCaja'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCaja'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caja'
+          description: ''
+    delete:
+      operationId: api_v1_treasury_cajas_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this caja.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/treasury/cierres-diarios/:
+    get:
+      operationId: api_v1_treasury_cierres_diarios_list
+      parameters:
+      - in: query
+        name: anulado
+        schema:
+          type: boolean
+      - in: query
+        name: fecha
+        schema:
+          type: string
+          format: date
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sucursal
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCierreDiarioList'
+          description: ''
+    post:
+      operationId: api_v1_treasury_cierres_diarios_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CierreDiario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CierreDiario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CierreDiario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CierreDiario'
+          description: ''
+  /api/v1/treasury/cierres-diarios/{id}/:
+    get:
+      operationId: api_v1_treasury_cierres_diarios_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this cierre diario.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CierreDiario'
+          description: ''
+    put:
+      operationId: api_v1_treasury_cierres_diarios_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this cierre diario.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CierreDiario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CierreDiario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CierreDiario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CierreDiario'
+          description: ''
+    patch:
+      operationId: api_v1_treasury_cierres_diarios_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this cierre diario.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCierreDiario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCierreDiario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCierreDiario'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CierreDiario'
+          description: ''
+    delete:
+      operationId: api_v1_treasury_cierres_diarios_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this cierre diario.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/treasury/formas-pago/:
+    get:
+      operationId: api_v1_treasury_formas_pago_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFormaPagoList'
+          description: ''
+    post:
+      operationId: api_v1_treasury_formas_pago_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormaPago'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FormaPago'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FormaPago'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormaPago'
+          description: ''
+  /api/v1/treasury/formas-pago/{id}/:
+    get:
+      operationId: api_v1_treasury_formas_pago_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this forma pago.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormaPago'
+          description: ''
+    put:
+      operationId: api_v1_treasury_formas_pago_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this forma pago.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormaPago'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FormaPago'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FormaPago'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormaPago'
+          description: ''
+    patch:
+      operationId: api_v1_treasury_formas_pago_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this forma pago.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFormaPago'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFormaPago'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFormaPago'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormaPago'
+          description: ''
+    delete:
+      operationId: api_v1_treasury_formas_pago_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this forma pago.
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /iclock/cdata:
+    get:
+      operationId: iclock_cdata_retrieve
+      tags:
+      - iclock
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: ''
+    post:
+      operationId: iclock_cdata_create
+      tags:
+      - iclock
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              format: byte
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+              format: byte
+          multipart/form-data:
+            schema:
+              type: string
+              format: byte
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: ''
+components:
+  schemas:
+    Almacen:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 120
+        activo:
+          type: boolean
+        sucursal:
+          type: integer
+      required:
+      - codigo
+      - created_at
+      - id
+      - nombre
+      - sucursal
+      - updated_at
+    Arqueo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        detalles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArqueoDetalle'
+          readOnly: true
+        total_contado:
+          type: number
+          format: double
+          readOnly: true
+        diferencia:
+          type: number
+          format: double
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        fecha:
+          type: string
+          format: date
+        total_arqueo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+          readOnly: true
+        total_efectivo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+          readOnly: true
+        estado:
+          allOf:
+          - $ref: '#/components/schemas/EstadoEnum'
+          readOnly: true
+        cerrado_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        sucursal:
+          type: integer
+          readOnly: true
+        caja:
+          type: integer
+        cajero:
+          type: integer
+          readOnly: true
+        cerrado_por:
+          type: integer
+          readOnly: true
+          nullable: true
+      required:
+      - caja
+      - cajero
+      - cerrado_at
+      - cerrado_por
+      - created_at
+      - detalles
+      - diferencia
+      - estado
+      - fecha
+      - id
+      - sucursal
+      - total_arqueo
+      - total_contado
+      - total_efectivo
+      - updated_at
+    ArqueoDetalle:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        numero_linea:
+          type: integer
+          readOnly: true
+        categoria:
+          type: string
+          maxLength: 40
+        descripcion:
+          type: string
+          maxLength: 200
+        importe:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        arqueo:
+          type: integer
+          readOnly: true
+        forma_pago:
+          type: integer
+          nullable: true
+      required:
+      - arqueo
+      - categoria
+      - id
+      - importe
+      - numero_linea
+    Caja:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 100
+        activa:
+          type: boolean
+        sucursal:
+          type: integer
+      required:
+      - codigo
+      - created_at
+      - id
+      - nombre
+      - sucursal
+      - updated_at
+    CierreDiario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        fecha:
+          type: string
+          format: date
+        numero_deposito:
+          type: string
+          maxLength: 80
+        importe_deposito:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        anulado:
+          type: boolean
+          readOnly: true
+        sucursal:
+          type: integer
+        creado_por:
+          type: integer
+          readOnly: true
+        arqueos:
+          type: array
+          items:
+            type: integer
+      required:
+      - anulado
+      - arqueos
+      - creado_por
+      - created_at
+      - fecha
+      - id
+      - sucursal
+      - updated_at
+    DailyAttendance:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        employee_name:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        date:
+          type: string
+          format: date
+          readOnly: true
+        first_entry:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        last_exit:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        worked_minutes:
+          type: integer
+          readOnly: true
+        late_minutes:
+          type: integer
+          readOnly: true
+        overtime_minutes:
+          type: integer
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        employee:
+          type: integer
+          readOnly: true
+      required:
+      - created_at
+      - date
+      - employee
+      - employee_name
+      - first_entry
+      - id
+      - last_exit
+      - late_minutes
+      - overtime_minutes
+      - status
+      - updated_at
+      - worked_minutes
+    Device:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        last_marking:
+          type: string
+          format: date-time
+          readOnly: true
+        connection_state:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        serial_number:
+          type: string
+          maxLength: 80
+        name:
+          type: string
+          maxLength: 120
+        ip_address:
+          type: string
+          nullable: true
+        port:
+          type: integer
+          maximum: 4294967295
+          minimum: 0
+          format: int64
+        device_model:
+          type: string
+          maxLength: 100
+        firmware:
+          type: string
+          maxLength: 100
+        location:
+          type: string
+          maxLength: 180
+        last_connection:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        branch:
+          type: integer
+      required:
+      - branch
+      - connection_state
+      - created_at
+      - id
+      - last_marking
+      - name
+      - serial_number
+      - updated_at
+    DireccionEnum:
+      enum:
+      - in
+      - out
+      type: string
+      description: |-
+        * `in` - Entrada
+        * `out` - Salida
+    Empleado:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 30
+        numero_documento:
+          type: string
+          pattern: ^[0-9]{8,11}$
+          maxLength: 11
+        nombres:
+          type: string
+          maxLength: 100
+        apellidos:
+          type: string
+          maxLength: 120
+        cargo:
+          type: string
+          maxLength: 100
+        biometric_pin:
+          type: string
+          nullable: true
+          maxLength: 32
+        activo:
+          type: boolean
+        usuario:
+          type: integer
+          nullable: true
+        sucursal:
+          type: integer
+      required:
+      - apellidos
+      - codigo
+      - created_at
+      - id
+      - nombres
+      - numero_documento
+      - sucursal
+      - updated_at
+    Empresa:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        ruc:
+          type: string
+          maxLength: 11
+        razon_social:
+          type: string
+          maxLength: 200
+        nombre_comercial:
+          type: string
+          maxLength: 150
+        activa:
+          type: boolean
+      required:
+      - created_at
+      - id
+      - razon_social
+      - ruc
+      - updated_at
+    EstadoEnum:
+      enum:
+      - open
+      - closed
+      - cancelled
+      type: string
+      description: |-
+        * `open` - Abierto
+        * `closed` - Cerrado
+        * `cancelled` - Anulado
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        employee_name:
+          type: string
+          readOnly: true
+        biometric_pin:
+          type: string
+          readOnly: true
+        occurred_at:
+          type: string
+          format: date-time
+          readOnly: true
+        device_status:
+          type: string
+          readOnly: true
+        verification_method:
+          allOf:
+          - $ref: '#/components/schemas/VerificationMethodEnum'
+          readOnly: true
+          default: other
+        source_event_id:
+          type: string
+          readOnly: true
+        confidence:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+          readOnly: true
+          nullable: true
+        raw_data:
+          type: string
+          readOnly: true
+        received_at:
+          type: string
+          format: date-time
+          readOnly: true
+        processed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        device:
+          type: integer
+          readOnly: true
+        employee:
+          type: integer
+          readOnly: true
+          nullable: true
+      required:
+      - biometric_pin
+      - confidence
+      - device
+      - device_status
+      - employee
+      - employee_name
+      - id
+      - occurred_at
+      - processed_at
+      - raw_data
+      - received_at
+      - source_event_id
+      - verification_method
+    EventList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        employee_name:
+          type: string
+          readOnly: true
+        biometric_pin:
+          type: string
+          readOnly: true
+        occurred_at:
+          type: string
+          format: date-time
+          readOnly: true
+        device_status:
+          type: string
+          readOnly: true
+        verification_method:
+          allOf:
+          - $ref: '#/components/schemas/VerificationMethodEnum'
+          readOnly: true
+          default: other
+        source_event_id:
+          type: string
+          readOnly: true
+        confidence:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,4})?$
+          readOnly: true
+          nullable: true
+        raw_data:
+          type: string
+          readOnly: true
+        received_at:
+          type: string
+          format: date-time
+          readOnly: true
+        processed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        device:
+          type: integer
+          readOnly: true
+        employee:
+          type: integer
+          readOnly: true
+          nullable: true
+      required:
+      - biometric_pin
+      - confidence
+      - device
+      - device_status
+      - employee
+      - employee_name
+      - id
+      - occurred_at
+      - processed_at
+      - raw_data
+      - received_at
+      - source_event_id
+      - verification_method
+    FormaPago:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 80
+        es_efectivo:
+          type: boolean
+        activa:
+          type: boolean
+      required:
+      - codigo
+      - created_at
+      - id
+      - nombre
+      - updated_at
+    Kardex:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        producto_nombre:
+          type: string
+          readOnly: true
+        almacen_nombre:
+          type: string
+          readOnly: true
+        direccion:
+          $ref: '#/components/schemas/DireccionEnum'
+        cantidad:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,4})?$
+        saldo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,4})?$
+        costo_unitario:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,4})?$
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        movimiento:
+          type: integer
+        producto:
+          type: integer
+        almacen:
+          type: integer
+      required:
+      - almacen
+      - almacen_nombre
+      - cantidad
+      - created_at
+      - direccion
+      - id
+      - movimiento
+      - producto
+      - producto_nombre
+      - saldo
+    LoginRequest:
+      type: object
+      properties:
+        usuario:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - usuario
+    LoginResponse:
+      type: object
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+        usuario:
+          type: object
+          additionalProperties: {}
+      required:
+      - access
+      - refresh
+      - usuario
+    Logout:
+      type: object
+      properties:
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - refresh
+    Marca:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 100
+        activa:
+          type: boolean
+      required:
+      - created_at
+      - id
+      - nombre
+      - updated_at
+    Me:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Nombre de usuario
+          description: 'Requerido. 150 carácteres como máximo. Únicamente letras,
+            dígitos y @/./+/-/_ '
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          title: Nombre
+          maxLength: 150
+        last_name:
+          type: string
+          title: Apellidos
+          maxLength: 150
+        employee:
+          allOf:
+          - $ref: '#/components/schemas/Empleado'
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: string
+          readOnly: true
+      required:
+      - email
+      - employee
+      - id
+      - permissions
+      - username
+    MenuItem:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        route:
+          type: string
+        icon:
+          type: string
+      required:
+      - code
+      - icon
+      - name
+      - route
+    Modulo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        code:
+          type: string
+          maxLength: 80
+        name:
+          type: string
+          maxLength: 120
+        route:
+          type: string
+          maxLength: 200
+        icon:
+          type: string
+          maxLength: 50
+        order:
+          type: integer
+          maximum: 65535
+          minimum: 0
+        is_active:
+          type: boolean
+        parent:
+          type: integer
+          nullable: true
+      required:
+      - code
+      - created_at
+      - id
+      - name
+      - updated_at
+    Movimiento:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        tipo:
+          $ref: '#/components/schemas/TipoEnum'
+        referencia:
+          type: string
+          maxLength: 100
+        observacion:
+          type: string
+        idempotency_key:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        sucursal:
+          type: integer
+        almacen_origen:
+          type: integer
+          nullable: true
+        almacen_destino:
+          type: integer
+          nullable: true
+        proveedor:
+          type: integer
+          nullable: true
+        creado_por:
+          type: integer
+      required:
+      - creado_por
+      - created_at
+      - id
+      - idempotency_key
+      - sucursal
+      - tipo
+      - updated_at
+    Oficina:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 150
+        activa:
+          type: boolean
+        sucursal:
+          type: integer
+      required:
+      - codigo
+      - created_at
+      - id
+      - nombre
+      - sucursal
+      - updated_at
+    PaginatedAlmacenList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Almacen'
+    PaginatedArqueoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Arqueo'
+    PaginatedCajaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Caja'
+    PaginatedCierreDiarioList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CierreDiario'
+    PaginatedDailyAttendanceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyAttendance'
+    PaginatedDeviceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+    PaginatedEmpleadoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Empleado'
+    PaginatedEmpresaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Empresa'
+    PaginatedEventListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventList'
+    PaginatedFormaPagoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormaPago'
+    PaginatedKardexList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Kardex'
+    PaginatedMarcaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Marca'
+    PaginatedModuloList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Modulo'
+    PaginatedMovimientoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movimiento'
+    PaginatedOficinaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Oficina'
+    PaginatedPerfilList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Perfil'
+    PaginatedPermisoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permiso'
+    PaginatedProductoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Producto'
+    PaginatedProveedorList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Proveedor'
+    PaginatedSerieDocumentoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerieDocumento'
+    PaginatedSucursalList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sucursal'
+    PaginatedTipoDocumentoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TipoDocumento'
+    PaginatedUbigeoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ubigeo'
+    PaginatedUnidadMedidaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnidadMedida'
+    PaginatedUsuarioList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Usuario'
+    PatchedAlmacen:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 120
+        activo:
+          type: boolean
+        sucursal:
+          type: integer
+    PatchedArqueo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        detalles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArqueoDetalle'
+          readOnly: true
+        total_contado:
+          type: number
+          format: double
+          readOnly: true
+        diferencia:
+          type: number
+          format: double
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        fecha:
+          type: string
+          format: date
+        total_arqueo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+          readOnly: true
+        total_efectivo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+          readOnly: true
+        estado:
+          allOf:
+          - $ref: '#/components/schemas/EstadoEnum'
+          readOnly: true
+        cerrado_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        sucursal:
+          type: integer
+          readOnly: true
+        caja:
+          type: integer
+        cajero:
+          type: integer
+          readOnly: true
+        cerrado_por:
+          type: integer
+          readOnly: true
+          nullable: true
+    PatchedCaja:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 100
+        activa:
+          type: boolean
+        sucursal:
+          type: integer
+    PatchedCierreDiario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        fecha:
+          type: string
+          format: date
+        numero_deposito:
+          type: string
+          maxLength: 80
+        importe_deposito:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        anulado:
+          type: boolean
+          readOnly: true
+        sucursal:
+          type: integer
+        creado_por:
+          type: integer
+          readOnly: true
+        arqueos:
+          type: array
+          items:
+            type: integer
+    PatchedDevice:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        last_marking:
+          type: string
+          format: date-time
+          readOnly: true
+        connection_state:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        serial_number:
+          type: string
+          maxLength: 80
+        name:
+          type: string
+          maxLength: 120
+        ip_address:
+          type: string
+          nullable: true
+        port:
+          type: integer
+          maximum: 4294967295
+          minimum: 0
+          format: int64
+        device_model:
+          type: string
+          maxLength: 100
+        firmware:
+          type: string
+          maxLength: 100
+        location:
+          type: string
+          maxLength: 180
+        last_connection:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        branch:
+          type: integer
+    PatchedEmpleado:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 30
+        numero_documento:
+          type: string
+          pattern: ^[0-9]{8,11}$
+          maxLength: 11
+        nombres:
+          type: string
+          maxLength: 100
+        apellidos:
+          type: string
+          maxLength: 120
+        cargo:
+          type: string
+          maxLength: 100
+        biometric_pin:
+          type: string
+          nullable: true
+          maxLength: 32
+        activo:
+          type: boolean
+        usuario:
+          type: integer
+          nullable: true
+        sucursal:
+          type: integer
+    PatchedEmpresa:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        ruc:
+          type: string
+          maxLength: 11
+        razon_social:
+          type: string
+          maxLength: 200
+        nombre_comercial:
+          type: string
+          maxLength: 150
+        activa:
+          type: boolean
+    PatchedFormaPago:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 80
+        es_efectivo:
+          type: boolean
+        activa:
+          type: boolean
+    PatchedMarca:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 100
+        activa:
+          type: boolean
+    PatchedModulo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        code:
+          type: string
+          maxLength: 80
+        name:
+          type: string
+          maxLength: 120
+        route:
+          type: string
+          maxLength: 200
+        icon:
+          type: string
+          maxLength: 50
+        order:
+          type: integer
+          maximum: 65535
+          minimum: 0
+        is_active:
+          type: boolean
+        parent:
+          type: integer
+          nullable: true
+    PatchedOficina:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 150
+        activa:
+          type: boolean
+        sucursal:
+          type: integer
+    PatchedPerfil:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 50
+        nombre:
+          type: string
+          maxLength: 100
+        is_active:
+          type: boolean
+    PatchedPermiso:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        can_view:
+          type: boolean
+        can_create:
+          type: boolean
+        can_update:
+          type: boolean
+        can_delete:
+          type: boolean
+        can_approve:
+          type: boolean
+        can_cancel:
+          type: boolean
+        can_close:
+          type: boolean
+        can_export:
+          type: boolean
+        profile:
+          type: integer
+        module:
+          type: integer
+    PatchedProducto:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        stocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductoStock'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 40
+        codigo_barras:
+          type: string
+          nullable: true
+          maxLength: 80
+        nombre:
+          type: string
+          maxLength: 180
+        stock_minimo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,4})?$
+        afecta_stock:
+          type: boolean
+        activo:
+          type: boolean
+        marca:
+          type: integer
+          nullable: true
+        unidad_base:
+          type: integer
+    PatchedProveedor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        ruc:
+          type: string
+          maxLength: 11
+        razon_social:
+          type: string
+          maxLength: 200
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        telefono:
+          type: string
+          maxLength: 30
+        activo:
+          type: boolean
+    PatchedSerieDocumento:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        serie:
+          type: string
+          maxLength: 10
+        valor_siguiente:
+          type: integer
+          readOnly: true
+        valor_minimo:
+          type: integer
+          maximum: 18446744073709551615
+          minimum: 0
+          format: int64
+        valor_maximo:
+          type: integer
+          maximum: 18446744073709551615
+          minimum: 0
+          format: int64
+        incremento:
+          type: integer
+          maximum: 4294967295
+          minimum: 0
+          format: int64
+        activa:
+          type: boolean
+        empresa:
+          type: integer
+        sucursal:
+          type: integer
+        oficina:
+          type: integer
+          nullable: true
+        tipo_documento:
+          type: integer
+    PatchedSucursal:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 150
+        direccion:
+          type: string
+          maxLength: 250
+        activa:
+          type: boolean
+        empresa:
+          type: integer
+    PatchedTipoDocumento:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 10
+        nombre:
+          type: string
+          maxLength: 100
+        codigo_sunat:
+          type: string
+          maxLength: 4
+        activo:
+          type: boolean
+    PatchedUnidadMedida:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 80
+        factor_base:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        activa:
+          type: boolean
+    PatchedUsuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Nombre de usuario
+          description: 'Requerido. 150 carácteres como máximo. Únicamente letras,
+            dígitos y @/./+/-/_ '
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          title: Nombre
+          maxLength: 150
+        last_name:
+          type: string
+          title: Apellidos
+          maxLength: 150
+        is_active:
+          type: boolean
+          title: Activo
+          description: Indica si el usuario debe ser tratado como activo. Desmarque
+            esta opción en lugar de borrar la cuenta.
+        must_change_password:
+          type: boolean
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+          readOnly: true
+    Perfil:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 50
+        nombre:
+          type: string
+          maxLength: 100
+        is_active:
+          type: boolean
+      required:
+      - codigo
+      - created_at
+      - id
+      - nombre
+      - updated_at
+    Permiso:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        can_view:
+          type: boolean
+        can_create:
+          type: boolean
+        can_update:
+          type: boolean
+        can_delete:
+          type: boolean
+        can_approve:
+          type: boolean
+        can_cancel:
+          type: boolean
+        can_close:
+          type: boolean
+        can_export:
+          type: boolean
+        profile:
+          type: integer
+        module:
+          type: integer
+      required:
+      - id
+      - module
+      - profile
+    Producto:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        stocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductoStock'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 40
+        codigo_barras:
+          type: string
+          nullable: true
+          maxLength: 80
+        nombre:
+          type: string
+          maxLength: 180
+        stock_minimo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,4})?$
+        afecta_stock:
+          type: boolean
+        activo:
+          type: boolean
+        marca:
+          type: integer
+          nullable: true
+        unidad_base:
+          type: integer
+      required:
+      - codigo
+      - created_at
+      - id
+      - nombre
+      - stocks
+      - unidad_base
+      - updated_at
+    ProductoStock:
+      type: object
+      properties:
+        almacen:
+          type: integer
+        almacen_nombre:
+          type: string
+          readOnly: true
+        cantidad:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,4})?$
+        ultimo_costo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,4})?$
+      required:
+      - almacen
+      - almacen_nombre
+    Proveedor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        ruc:
+          type: string
+          maxLength: 11
+        razon_social:
+          type: string
+          maxLength: 200
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        telefono:
+          type: string
+          maxLength: 30
+        activo:
+          type: boolean
+      required:
+      - created_at
+      - id
+      - razon_social
+      - ruc
+      - updated_at
+    RoleAssignment:
+      type: object
+      properties:
+        profile:
+          type: integer
+        company:
+          type: integer
+        branch:
+          type: integer
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - company
+      - profile
+    SerieDocumento:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        serie:
+          type: string
+          maxLength: 10
+        valor_siguiente:
+          type: integer
+          readOnly: true
+        valor_minimo:
+          type: integer
+          maximum: 18446744073709551615
+          minimum: 0
+          format: int64
+        valor_maximo:
+          type: integer
+          maximum: 18446744073709551615
+          minimum: 0
+          format: int64
+        incremento:
+          type: integer
+          maximum: 4294967295
+          minimum: 0
+          format: int64
+        activa:
+          type: boolean
+        empresa:
+          type: integer
+        sucursal:
+          type: integer
+        oficina:
+          type: integer
+          nullable: true
+        tipo_documento:
+          type: integer
+      required:
+      - created_at
+      - empresa
+      - id
+      - serie
+      - sucursal
+      - tipo_documento
+      - updated_at
+      - valor_siguiente
+    StatusEnum:
+      enum:
+      - active
+      - inactive
+      - maintenance
+      type: string
+      description: |-
+        * `active` - Activo
+        * `inactive` - Inactivo
+        * `maintenance` - Mantenimiento
+    Sucursal:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 150
+        direccion:
+          type: string
+          maxLength: 250
+        activa:
+          type: boolean
+        empresa:
+          type: integer
+      required:
+      - codigo
+      - created_at
+      - empresa
+      - id
+      - nombre
+      - updated_at
+    TipoDocumento:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 10
+        nombre:
+          type: string
+          maxLength: 100
+        codigo_sunat:
+          type: string
+          maxLength: 4
+        activo:
+          type: boolean
+      required:
+      - codigo
+      - created_at
+      - id
+      - nombre
+      - updated_at
+    TipoEnum:
+      enum:
+      - purchase
+      - output
+      - transfer
+      - adjustment
+      type: string
+      description: |-
+        * `purchase` - Compra
+        * `output` - Salida
+        * `transfer` - Traslado
+        * `adjustment` - Ajuste
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    Ubigeo:
+      type: object
+      properties:
+        codigo_inei:
+          type: string
+          maxLength: 6
+        departamento:
+          type: string
+          maxLength: 80
+        provincia:
+          type: string
+          maxLength: 80
+        distrito:
+          type: string
+          maxLength: 80
+      required:
+      - codigo_inei
+      - departamento
+      - distrito
+      - provincia
+    UnidadMedida:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        codigo:
+          type: string
+          maxLength: 20
+        nombre:
+          type: string
+          maxLength: 80
+        factor_base:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,4})?$
+        activa:
+          type: boolean
+      required:
+      - codigo
+      - created_at
+      - id
+      - nombre
+      - updated_at
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Nombre de usuario
+          description: 'Requerido. 150 carácteres como máximo. Únicamente letras,
+            dígitos y @/./+/-/_ '
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          title: Nombre
+          maxLength: 150
+        last_name:
+          type: string
+          title: Apellidos
+          maxLength: 150
+        is_active:
+          type: boolean
+          title: Activo
+          description: Indica si el usuario debe ser tratado como activo. Desmarque
+            esta opción en lugar de borrar la cuenta.
+        must_change_password:
+          type: boolean
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+          readOnly: true
+      required:
+      - email
+      - id
+      - must_change_password
+      - roles
+      - username
+    VerificationMethodEnum:
+      enum:
+      - fingerprint
+      - face
+      - card
+      - password
+      - other
+      type: string
+      description: |-
+        * `fingerprint` - Huella
+        * `face` - Rostro
+        * `card` - Tarjeta
+        * `password` - Contraseña
+        * `other` - Otro
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
