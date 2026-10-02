@@ -97,6 +97,13 @@ def test_event_list_hides_raw_data_but_detail_keeps_it(api_client, user, device)
 
 
 @pytest.mark.django_db
+def test_event_without_employee_reports_null_employee_name(api_client, device):
+    AttendanceEvent.objects.create(device=device, biometric_pin="9999", occurred_at=timezone.now(), raw_data="unknown-pin")
+    listed = api_client.get("/api/v1/attendance/events/")
+    assert listed.json()["results"][0]["employee_name"] is None
+
+
+@pytest.mark.django_db
 def test_local_enrollment_creates_login_employee_and_device_command(api_client, branch, device):
     profile = Perfil.objects.create(codigo="operator", nombre="Operador")
     response = api_client.post("/api/v1/attendance/enrollments/", {

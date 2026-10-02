@@ -27,12 +27,15 @@ class DeviceSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-    employee_name = serializers.CharField(source="employee.__str__", read_only=True)
+    employee_name = serializers.SerializerMethodField()
 
     class Meta:
         model = AttendanceEvent
         fields = "__all__"
         read_only_fields = ("id", "device", "employee", "biometric_pin", "occurred_at", "device_status", "verification_method", "source_event_id", "confidence", "raw_data", "received_at", "processed_at")
+
+    def get_employee_name(self, obj) -> str | None:
+        return str(obj.employee) if obj.employee_id else None
 
 
 class EventListSerializer(EventSerializer):
