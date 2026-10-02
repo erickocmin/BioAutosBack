@@ -22,6 +22,11 @@ class AttendanceDevice(TimeStampedModel):
 
 
 class AttendanceEvent(models.Model):
+    class Direction(models.TextChoices):
+        ENTRY = "entry", "Entrada"
+        EXIT = "exit", "Salida"
+        UNKNOWN = "unknown", "Sin determinar"
+
     class VerificationMethod(models.TextChoices):
         FINGERPRINT = "fingerprint", "Huella"
         FACE = "face", "Rostro"
@@ -34,6 +39,7 @@ class AttendanceEvent(models.Model):
     biometric_pin = models.CharField(max_length=32, db_index=True)
     occurred_at = models.DateTimeField(db_index=True)
     device_status = models.CharField(max_length=20, blank=True)
+    direction = models.CharField(max_length=12, choices=Direction.choices, default=Direction.UNKNOWN, db_index=True)
     verification_method = models.CharField(max_length=20, choices=VerificationMethod.choices, default=VerificationMethod.OTHER)
     source_event_id = models.CharField(max_length=100, blank=True)
     confidence = models.DecimalField(max_digits=5, decimal_places=4, null=True, blank=True)
@@ -50,6 +56,25 @@ class AttendanceEvent(models.Model):
 
     def delete(self, *args, **kwargs):
         raise TypeError("Los eventos de asistencia son inmutables.")
+
+
+class DeviceCommand(TimeStampedModel):
+    class Status(models.TextChoices):
+        PENDING = "pending", "Pendiente"
+        SENT = "sent", "Enviado"
+        ACKNOWLEDGED = "acknowledged", "Confirmado"
+        FAILED = "failed", "Fallido"
+
+    device = models.ForeignKey(AttendanceDevice, related_name="commands", on_delete=models.CASCADE)
+    command = models.TextField()
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING, db_index=True)
+    attempts = models.PositiveSmallIntegerField(default=0)
+    sent_at = models.DateTimeField(null=True, blank=True)
+    acknowledged_at = models.DateTimeField(null=True, blank=True)
+    response = models.TextField(blank=True)
+
+    class Meta:
+        indexes = [models.Index(fields=["device", "status", "created_at"], name="att_cmd_dev_stat_created_idx")]
 
 
 class DailyAttendance(TimeStampedModel):
