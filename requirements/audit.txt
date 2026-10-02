@@ -1,0 +1,2 @@
+# Dependencia aislada para scripts/audit/fleet_production_profile.py
+psycopg[binary]>=3.2,<4

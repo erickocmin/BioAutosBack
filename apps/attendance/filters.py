@@ -14,7 +14,7 @@ class EventFilter(filters.FilterSet):
 
     class Meta:
         model = AttendanceEvent
-        fields = ("device", "employee", "biometric_pin", "verification_method", "branch")
+        fields = ("device", "employee", "biometric_pin", "verification_method", "direction", "branch")
 
     def filter_processed(self, queryset, _name, value):
         return queryset.filter(processed_at__isnull=not value)

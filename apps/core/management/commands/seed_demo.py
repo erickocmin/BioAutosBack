@@ -12,7 +12,7 @@ MODULES = [
     "accounts.usuarios", "accounts.empleados", "accounts.perfiles", "accounts.modulos", "accounts.permisos",
     "inventory.almacenes", "inventory.unidades_medida", "inventory.marcas", "inventory.proveedores", "inventory.productos", "inventory.kardex", "inventory.movimientos",
     "treasury.cajas", "treasury.formas_pago", "treasury.arqueos", "treasury.cierres_diarios",
-    "attendance.devices", "attendance.events", "attendance.daily",
+    "attendance.devices", "attendance.events", "attendance.daily", "attendance.enrollments",
 ]
 
 

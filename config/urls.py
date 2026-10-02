@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from apps.attendance.views import iclock_cdata
+from apps.attendance.views import iclock_cdata, iclock_devicecmd, iclock_getrequest
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -13,4 +13,9 @@ urlpatterns = [
     path("api/v1/treasury/", include("apps.treasury.urls")),
     path("api/v1/attendance/", include("apps.attendance.urls")),
     path("iclock/cdata", iclock_cdata, name="iclock-cdata-root"),
+    path("iclock/cdata.aspx", iclock_cdata, name="iclock-cdata-aspx-root"),
+    path("iclock/getrequest", iclock_getrequest, name="iclock-getrequest-root"),
+    path("iclock/getrequest.aspx", iclock_getrequest, name="iclock-getrequest-aspx-root"),
+    path("iclock/devicecmd", iclock_devicecmd, name="iclock-devicecmd-root"),
+    path("iclock/devicecmd.aspx", iclock_devicecmd, name="iclock-devicecmd-aspx-root"),
 ]
