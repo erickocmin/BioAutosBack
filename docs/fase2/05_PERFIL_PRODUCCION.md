@@ -35,6 +35,9 @@ UNION ALL
 SELECT 'public.recorridos', COUNT(*), COUNT(DISTINCT idrecorrido), COUNT(*) FILTER (WHERE idrecorrido IS NULL),
        NULL::date, NULL::date FROM public.recorridos
 UNION ALL
+SELECT 'public.lineas', COUNT(*), COUNT(DISTINCT idlinea), COUNT(*) FILTER (WHERE idlinea IS NULL),
+       NULL::date, NULL::date FROM public.lineas
+UNION ALL
 SELECT 'comercial.linea', COUNT(*), COUNT(DISTINCT idlinea), COUNT(*) FILTER (WHERE idlinea IS NULL),
        NULL::date, NULL::date FROM comercial.linea
 UNION ALL
@@ -65,7 +68,8 @@ Clasificación esperada de identificadores:
 | propietario | `idpropietario`, serial | Pendiente |
 | conductor/transportista | `idtransportista`, serial | Pendiente de confirmar que esta sea la entidad funcional real |
 | ruta/recorrido | `idrecorrido`, serial | Pendiente |
-| línea | `comercial.linea.idlinea`, serial | Pendiente de confirmar frente a otras referencias legacy |
+| línea de transporte | `public.lineas.idlinea`, serial | El modelo activo de vehículo la usa; pendiente de producción |
+| línea de inventario | `comercial.linea.idlinea`, serial | Concepto paralelo; medir coincidencias para evitar fusionarlo por nombre |
 | manifiesto | `idmanifiesto`, serial | Pendiente |
 | papeleta | `idpapeleta`, serial | PK respaldada por 7,259 filas del mirror; repetir en producción |
 | cliente | `idcliente`, serial | PK respaldada por 417,405 filas del mirror; identidad documental no es única |
@@ -80,6 +84,7 @@ SELECT 'vehiculo' tabla, estado::text valor, COUNT(*) cantidad FROM public.vehic
 SELECT 'propietario' tabla, estado::text valor, COUNT(*) cantidad FROM public.propietario GROUP BY estado;
 SELECT 'transportista' tabla, estado::text valor, COUNT(*) cantidad FROM public.transportista GROUP BY estado;
 SELECT 'recorridos' tabla, estado::text valor, COUNT(*) cantidad FROM public.recorridos GROUP BY estado;
+SELECT 'public.lineas' tabla, estado::text valor, COUNT(*) cantidad FROM public.lineas GROUP BY estado;
 SELECT 'linea' tabla, estado::text valor, COUNT(*) cantidad FROM comercial.linea GROUP BY estado;
 SELECT 'papeleta.estado' tabla, estado::text valor, COUNT(*) cantidad FROM administrativo.papeleta GROUP BY estado;
 SELECT 'papeleta.estadopago' tabla, COALESCE(estadopago::text, '<NULL>') valor, COUNT(*) cantidad FROM administrativo.papeleta GROUP BY estadopago;
@@ -128,6 +133,13 @@ SELECT 'vehiculo -> linea(comercial)' relacion,
        COUNT(*) FILTER (WHERE v.idlinea IS NOT NULL AND l.idlinea IS NULL) huerfanas,
        ROUND(100.0 * COUNT(l.idlinea) / NULLIF(COUNT(*) FILTER (WHERE v.idlinea IS NOT NULL), 0), 2) pct_valido
 FROM public.vehiculo v LEFT JOIN comercial.linea l ON l.idlinea = v.idlinea;
+
+SELECT 'vehiculo -> linea(public)' relacion,
+       COUNT(*) hijos, COUNT(DISTINCT v.idlinea) padres_referenciados,
+       COUNT(l.idlinea) validas,
+       COUNT(*) FILTER (WHERE v.idlinea IS NOT NULL AND v.idlinea <> 0 AND l.idlinea IS NULL) huerfanas,
+       ROUND(100.0 * COUNT(l.idlinea) / NULLIF(COUNT(*) FILTER (WHERE v.idlinea IS NOT NULL AND v.idlinea <> 0), 0), 2) pct_valido
+FROM public.vehiculo v LEFT JOIN public.lineas l ON l.idlinea = v.idlinea;
 
 SELECT 'vehiculo -> sucursal_fin' relacion,
        COUNT(*) hijos, COUNT(DISTINCT v.idsucursal_fin) padres_referenciados,
@@ -183,3 +195,91 @@ ROLLBACK;
 ## Resultado D7
 
 **PENDIENTE DE EJECUCIÓN AUTORIZADA.** Mientras falten estos agregados, `fleet-core` puede diseñarse conceptualmente, pero no declararse listo para implementar.
+
+## RESULTADO EJECUTADO EN PRODUCCIÓN
+
+```text
+Acceso read-only autorizado: NO
+Base verificada: NO EJECUTADA
+Fecha de ejecución productiva: NO EJECUTADA
+```
+
+No se detectaron variables `FLEET_AUDIT_*`/`SISGETRAN_AUDIT_*` ni variables PostgreSQL estándar configuradas para esta tarea. Tampoco hay cliente `psql` ni driver Python PostgreSQL en el entorno. No se utilizaron las credenciales hardcodeadas del legacy y no se intentó ninguna conexión.
+
+### Script único preparado
+
+`scripts/audit/fleet_production_profile.py`:
+
+- recibe la conexión solo mediante entorno;
+- abre `BEGIN READ ONLY` y termina siempre con `ROLLBACK`;
+- verifica `transaction_read_only`, superusuario, DML, `TRUNCATE` y `CREATE` sobre base/esquemas;
+- aborta si la cuenta posee esos privilegios de escritura sobre el alcance auditado;
+- aplica `statement_timeout`;
+- contiene únicamente consultas `SELECT`, `WITH` y `SHOW` para lectura;
+- no recupera placas, DNI, nombres, direcciones, teléfonos ni correos;
+- produce JSON o Markdown con agregados.
+
+### Variables que debe inyectar infraestructura
+
+Usar una de estas dos formas, sin pegar valores en comandos, tickets o Git:
+
+```text
+FLEET_AUDIT_DSN
+FLEET_AUDIT_EXPECTED_DATABASE
+```
+
+o:
+
+```text
+FLEET_AUDIT_HOST
+FLEET_AUDIT_PORT
+FLEET_AUDIT_DATABASE
+FLEET_AUDIT_USER
+FLEET_AUDIT_PASSWORD
+FLEET_AUDIT_SSLMODE
+FLEET_AUDIT_EXPECTED_DATABASE
+```
+
+La contraseña debe ser inyectada por el mecanismo seguro de infraestructura, no escrita en el historial de shell.
+
+### Secuencia exacta
+
+1. Crear un entorno temporal fuera del repositorio e instalar `psycopg[binary]`.
+2. Inyectar las variables apuntando primero al mirror autorizado.
+3. Ejecutar:
+
+```powershell
+python scripts/audit/fleet_production_profile.py --self-test
+python scripts/audit/fleet_production_profile.py --format markdown --output fleet-mirror-aggregates.md
+```
+
+4. Revisar que la salida solo contenga agregados y que `read_only_guard` informe cero privilegios DML.
+5. Repetir con la cuenta productiva read-only y una ruta de salida fuera de Git:
+
+```powershell
+python scripts/audit/fleet_production_profile.py --format json --output fleet-production-aggregates.json
+```
+
+6. Entregar únicamente el archivo agregado revisado. No entregar variables, logs del driver ni connection strings.
+
+### Salida agregada requerida
+
+- perfil y PK de las doce entidades objetivo;
+- estados agregados;
+- forma estadística de `vehiculo.modelo`;
+- inventario de catálogos candidatos;
+- integridad vehículo→propietario/clase/marca/línea/sucursal_fin;
+- cardinalidad propietario→vehículos;
+- candidatos de conductor contra manifiestos, vehículos y papeletas;
+- rutas, documentos y manifiestos;
+- matriz agregada de papeletas;
+- existencia de esquemas, FDW, extensiones y rutinas de D6.
+
+### Validación realizada en este entorno
+
+```text
+Compilación Python: OK
+Self-test de allowlist SQL/salida: OK
+Mirror local: NO EJECUTADO (sin cuenta autorizada ni driver)
+Producción: NO EJECUTADA
+```

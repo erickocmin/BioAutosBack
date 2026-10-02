@@ -9,5 +9,9 @@ htmlcov/
 media/
 staticfiles/
 *.log
+fleet-mirror-profile.md
+fleet-mirror-profile.json
+fleet-production-profile.md
+fleet-production-profile.json
 .idea/
 .vscode/

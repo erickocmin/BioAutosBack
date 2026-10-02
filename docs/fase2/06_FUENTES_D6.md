@@ -58,3 +58,33 @@ Además, infraestructura debe revisar fuera de la base: cron, Task Scheduler, se
 ## Resultado D6
 
 **PARCIALMENTE RESUELTA.** Está confirmado que los esquemas faltan en el mirror y que el repositorio no define una fuente alternativa; su naturaleza productiva sigue `NO DETERMINADA`. Bloquea las capacidades que dependen de esas tablas, no todos los catálogos independientes por definición.
+
+## Resultado productivo de Fase 2B
+
+```text
+Producción consultada: NO
+reglasnegocio: NO DETERMINADO
+logistica: NO DETERMINADO
+caja: NO DETERMINADO
+```
+
+El script `scripts/audit/fleet_production_profile.py` incluye las consultas read-only de esquemas, servidores externos, extensiones y rutinas. Falta ejecutarlo con la cuenta autorizada.
+
+## Alcanzabilidad local de referencias que afectan Fleet
+
+| Referencia | Archivos | Funcionalidad | Fuente producción | Alcanzabilidad local | Estado |
+|---|---:|---|---|---|---|
+| `reglasnegocio.vehiculo` | 1 controlador | Anulación de vehículo | No determinada | Acción directa `vehiculoController::anular`; el resto del CRUD usa `public.vehiculo` | RUTA ALCANZABLE, referencia incoherente |
+| `reglasnegocio.correlativos/documentos` | 4 modelos catálogo | Métodos de correlativo copiados en clase/color/marca/modelo | No determinada | Acciones públicas existen, pero no se encontró navegación/JS que invoque esos métodos; los CRUD apuntan además a tablas inexistentes | CÓDIGO PROBABLEMENTE MUERTO |
+| `reglasnegocio.v_sucursal` | 1 controlador | Filtro de rotativo masivo | No determinada | Acción/controlador existe; la vista masiva ya estaba documentada como faltante/incompleta | NO DETERMINADO |
+| `logistica.area_oficina` | 1 controlador | Combos de edición de rotativo | No determinada | Acción de edición existe; depende de fuente ausente | RUTA ALCANZABLE, fuente no determinada |
+| `reglasnegocio.guia/dtguia` | 1 modelo | Reasignación/consulta de rezagados | No determinada | Métodos de rezagados referencian la fuente; pertenece a cargo, no a fleet-core básico | RUTA ALCANZABLE fuera de fleet-core |
+
+## Separación modelo válido / PHP roto
+
+- `public.vehiculo` es la fuente usada por el CRUD y consultas operativas; una referencia errónea en `anular` no invalida automáticamente la entidad.
+- El conductor se resuelve en código activo contra `public.transportista`, tanto desde vehículos como manifiestos.
+- El formulario operativo usa `public.clase`, `public.v_color` y `public.v_marca`; los controladores `vehiculoclase/color/marca/modelo` apuntan a tablas distintas ausentes y son candidatos a no migrar.
+- El flujo activo de vehículo consulta `public.lineas`; `comercial.linea` es una entidad paralela usada por inventario. La evidencia productiva debe confirmar la integridad del vínculo.
+
+Estas conclusiones reducen el alcance de D6: las referencias rotas no bloquean por sí solas toda entidad `Vehicle`, pero D7 sigue siendo necesario para confirmar datos y relaciones reales.

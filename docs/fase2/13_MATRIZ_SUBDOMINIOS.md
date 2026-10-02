@@ -12,14 +12,15 @@ Una decisión D9–D17 solo afecta las filas que la consumen.
 
 | Subdominio | Depende de | Decisión | Evidencia | Estado |
 |---|---|---|---|---|
-| `fleet.catalogs` | clase, color, marca, modelo, estados | D6, D7 | Estructuras parciales; controladores de catálogo apuntan también a tablas inexistentes y `modelo` aparece embebido como texto en vehículo | 🟡 PARCIAL |
+| `fleet.catalogs` | clase, color, marca, carrocería, modelo, estados | D6, D7 | Formulario activo usa `public.clase`, `public.v_color` y `public.v_marca`; controladores paralelos están rotos; `modelo` aparece como texto | 🟡 PARCIAL |
 | `fleet.vehicles` | propietarios, catálogos, sucursal | D7 | `public.vehiculo` y campos documentados, pero 0 filas en mirror; sucursal operativa y modelo relacional no confirmados | 🟡 PARCIAL |
 | `fleet.owners` | identidad/ubigeo | D7 | `public.propietario` documentada, 0 filas en mirror | 🟡 PARCIAL |
 | `fleet.drivers` | personal/transportista | D7 | `public.transportista` y otras referencias a conductor; entidad funcional real no confirmada | 🟡 PARCIAL |
 | `fleet.documents` | vehículo/conductor | D7 | Fechas SOAT, revisión, permisos y licencia visibles; fuentes auxiliares referenciadas por alertas están rotas/ausentes | 🟡 PARCIAL |
 | `fleet.routes` | sucursal/origen/destino | D7 | `public.recorridos` documentada, pero 0 filas productivamente representativas | 🟡 PARCIAL |
-| `fleet.lines` | rutas/vehículos | D6, D7 | Coexisten `public.vehiculo.idlinea`, `comercial.linea` y referencias legacy; fuente final no confirmada | 🟡 PARCIAL |
-| `fleet.manifests` | vehículo, ruta, conductor, series | D2, D7 | `transportes.manifiesto` documentada, 0 filas; usa correlativos documentales | 🟡 PARCIAL |
+| `fleet.lines` | rutas/vehículos | D7 | El PHP activo enlaza `public.vehiculo.idlinea` con `public.lineas`; `comercial.linea` es un concepto paralelo; falta confirmación productiva | 🟡 PARCIAL |
+| `fleet.manifest-core` | vehículo, ruta, conductor | D7 | `transportes.manifiesto` documentada, 0 filas representativas | 🟡 PARCIAL |
+| `fleet.manifest-numbering` | manifiesto, series | D2 | La numeración usa correlativos documentales sin datos productivos disponibles | 🔴 BLOQUEADO |
 | `fleet.papeletas` | vehículo, infractor | D7, D13 | 7,259 filas y matriz de estados disponible; semántica/transiciones desconocidas | 🔴 BLOQUEADO |
 | `fleet.debt-validation` | documentos, papeletas, mensualidades, créditos | D10, D13, D15 | Doce motivos reconstruidos; gracia contradictoria y excepción hardcodeada sin política | 🔴 BLOQUEADO |
 
@@ -77,4 +78,4 @@ Una decisión D9–D17 solo afecta las filas que la consumen.
 
 ## Primer candidato
 
-`fleet-core` —catálogos, vehículos, propietarios, conductores, documentos, rutas y líneas— es el primer candidato natural, pero **todavía no está listo para implementar**. Para pasar a verde necesita como mínimo ejecutar D7 en producción y cerrar las ambigüedades de fuente D6 que afectan catálogos/líneas. D13 y D15 no deben incluirse en ese primer incremento.
+`fleet-core` —catálogos, vehículos, propietarios, conductores, documentos, rutas y líneas— es el primer candidato natural, pero **todavía no está listo para implementar**. La preparación read-only y el estado actualizado están en `16_FLEET_READINESS.md`. Para pasar a verde necesita ejecutar D7 en producción; D13, D15 y numeración de manifiestos no deben incluirse en ese primer incremento.

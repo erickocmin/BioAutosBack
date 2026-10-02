@@ -84,3 +84,7 @@ No se crearon apps, modelos, migraciones ni módulos React.
 ```text
 FASE 2A COMPLETADA — NINGÚN SUBDOMINIO LISTO
 ```
+
+## Seguimiento Fase 2B
+
+La validación productiva D7 aún no fue ejecutada porque no se proporcionó una cuenta read-only autorizada. El script seguro, las instrucciones y la matriz actualizada se documentan en `05_PERFIL_PRODUCCION.md`, `06_FUENTES_D6.md` y `16_FLEET_READINESS.md`. Este seguimiento no cambia retroactivamente el resultado de Fase 2A.
